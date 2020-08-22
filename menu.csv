@@ -1,5 +1,12 @@
-Hamburger,"It's a hamburger, not to be confused with a cheeseburger.",4.99,50,lunch,False
-Cheeseburger,"It's a cheeseburger, not to be confused with a hamburger.",6.99,48,lunch,False
-Cherry Pie,It's a gorgeous pie.,13.99,10,dessert,True
-Pb&J,It's a sandwich.,2.99,38,lunch,True
-Ribs,It's ribs!,20.99,15,dinner,False
+Hamburger,"It's a hamburger, not to be confused with a cheeseburger.",4.99,47,lunch,False
+Cheeseburger,"It's a cheeseburger, not to be confused with a hamburger.",6.99,47,lunch,False
+Cherry Pie,It's a gorgeous pie.,13.99,0,dessert,True
+Pb&J,It's a sandwich.,2.99,34,lunch,True
+Ribs,It's ribs!,20.99,12,dinner,False
+Calamari,Fresh squid fried in a club soda batter.,16.99,20,lunch,False
+Hakefish Chowder,"Maine-style chowder with sweet, fresh-caught hakefish.",9.99,25,lunch,False
+Hong Kong French Toast,"French toast layered with maple syrup, condensed milk, and a slab of butter on top.",6.99,50,breakfast,False
+Ethiopian-Italian Lasagna,Lasagna bolognese with a fiery berbere accent.,18.99,20,entree,False
+Sichuanese Mac-&-Cheese,"Macaroni-and-cheese with a smooth, spicy crunch from Chinese chili crisp.",13.99,25,entree,False
+Southern Buttermint,Jeni's Ice Cream with old-school buttermint candies.,8.99,50,dessert,False
+Cassoulet,"Rural French casserole with rich sausage, duck confit, and flageolet.",23.99,10,entree,False
