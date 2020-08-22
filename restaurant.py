@@ -11,8 +11,11 @@ class Restaurant:
     def open_restaurant(self):
         print(f"{self.name} is open for business in accordance with COVID-19 guidelines.")
     def load_menu(self):
-        with open("menu.json", "r") as file:
-            self.menu = json.loads(file.read())
+        try:
+            with open("menu.json", "r") as file:
+                self.menu = json.loads(file.read())
+        except IOError:
+            print("Missing menu file.")
         return self.menu
     def write_menu(self):
         with open("menu.json", "w") as file:
