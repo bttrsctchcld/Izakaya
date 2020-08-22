@@ -1,4 +1,4 @@
-import copy, csv
+import copy, csv, json
 
 class Restaurant:
     def __init__(self, name, cuisine_type):
@@ -11,15 +11,12 @@ class Restaurant:
     def open_restaurant(self):
         print(f"{self.name} is open for business in accordance with COVID-19 guidelines.")
     def load_menu(self):
-        with open("menu.csv", "r") as file:
-            fieldnames = ["order", "taste", "price", "avail", "service", "allergy"]
-            self.menu = [{key: value for key, value in row.items()} for row in csv.DictReader(file, fieldnames=fieldnames)]
+        with open("menu.json", "r") as file:
+            self.menu = json.loads(file.read())
         return self.menu
     def write_menu(self):
-        with open("menu.csv", "w", encoding="utf8", newline="") as file:
-            fieldnames = ["order", "taste", "price", "avail", "service", "allergy"]
-            writer = csv.DictWriter(file, fieldnames=fieldnames)
-            writer.writerows(self.menu)
+        with open("menu.json", "w") as file:
+            json.dump(self.menu, file)
     def update_menu(self):
         self.load_menu()
         while True:
@@ -79,7 +76,7 @@ class Restaurant:
                 break
             for self.item in self.menu:
                 if order in self.item["order"]:
-                    if customer_allergy == "yes" and self.item["allergy"] == "True":
+                    if customer_allergy == "yes" and self.item["allergy"] == True:
                         print("I'm sorry but you appear to be allergic.")
                     elif int(self.item["avail"]) > 0:
                         self.decrement_stock()
