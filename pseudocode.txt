@@ -1,7 +1,7 @@
 class Restaurant
 
 # build a list (menu) of dictionaries (menu items)
-## reprocess menu in csv as menu in memory
+## reprocess menu in json as menu in memory
 ### decrement orders, 86 once avail == 0
 #### restock avail by method
 ##### set generic allergy flag on orders and items
