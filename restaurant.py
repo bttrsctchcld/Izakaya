@@ -58,7 +58,7 @@ class Restaurant:
         low_supply = [self.item for self.item in self.menu if int(self.item["avail"]) <= supply_query]
         print(low_supply)
     def decrement_stock(self):
-        self.item["avail"] = (int(self.item["avail"]) - 1)
+        self.item["avail"] -= 1
         self.write_menu()
         return self.menu
     def restock(self):
@@ -67,7 +67,7 @@ class Restaurant:
         restock = int(input("How much stock have we replenished? "))
         for self.item in self.menu:
             if stock in self.item["order"]:
-                self.item["avail"] = (int(self.item["avail"]) + restock)
+                self.item["avail"] += restock
                 self.write_menu()
     def customer_order(self):
         self.load_menu()
