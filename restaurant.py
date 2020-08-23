@@ -41,7 +41,7 @@ class Restaurant:
             allergy = input("Are there high-risk allergies associated with this item? ").lower()
             if allergy == "yes":
                 self.item["allergy"] = True
-            self.menu.append(copy.deepcopy(self.item))
+            self.menu.append(copy.copy(self.item))
             prompt = input("Any more additions to the menu? ").lower()
             if prompt != "yes":
                 break
