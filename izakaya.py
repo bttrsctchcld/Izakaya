@@ -11,8 +11,22 @@ my_restaurant = IceCreamParlor(restaurant_name, restaurant_style, parlor_base_pr
 my_restaurant.load_menu()
 my_restaurant.get_stored_flavors()
 
+dispatch = {
+        'load menu': my_restaurant.load_menu(),
+        "update menu": my_restaurant.update_menu(),
+        "print menu": my_restaurant.print_menu(),
+        "take stock": my_restaurant.take_stock(),
+        "decrement stock": my_restaurant.decrement_stock(),
+        "restock": my_restaurant.restock(),
+        "customer order": my_restaurant.customer_order(),
+        "load flavors": my_restaurant.get_stored_flavors(),
+        "update flavors": my_restaurant.update_flavors(),
+        "print flavors": my_restaurant.describe_flavors(),
+        "customer ticket": my_restaurant.customer_ticket(),
+}
+
 while True:
-	general_query = input("""
+    general_query = input("""
 	
 	What would you like to do?
 	    
@@ -27,27 +41,8 @@ while True:
 	    customer ticket
 
 	    """).lower()
-	if general_query == "q":
-		break
-	elif general_query == "load menu":
-		my_restaurant.load_menu()
-	elif general_query == "update menu":
-		my_restaurant.update_menu()
-	elif general_query == "print menu":
-		my_restaurant.print_menu()
-	elif general_query == "take stock":
-		my_restaurant.take_stock()
-	elif general_query == "decrement stock":
-		my_restaurant.decrement_stock()
-	elif general_query == "restock":
-		my_restaurant.restock()
-	elif general_query == "customer order":
-		my_restaurant.customer_order()
-	elif general_query == "load flavors":
-		my_restaurant.get_stored_flavors()
-	elif general_query == "update flavors":
-		my_restaurant.update_flavors()
-	elif general_query == "print flavors":
-		my_restaurant.describe_flavors()
-	elif general_query == "customer ticket":
-		my_restaurant.customer_ticket()
+
+    if general_query == "q":
+	break
+    else:
+        #TODO
