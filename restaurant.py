@@ -1,17 +1,8 @@
 from datetime import datetime
 import json
 
-# assign hours of operation for the restaurant and hours of availability for menu items depending on "service" value
-    # breakfast 8am-12pm
-    # lunch 11am-5pm
-    # appetizer 5pm-10pm
-    # entree 5pm-10pm
-    # dessert 11am-10pm
-    # bar 5pm-3am
-    # cafe 8am-10pm
-
 class Restaurant:
-    def __init__(self,name,cuisine_type,uptime,downtime):
+    def __init__(self,name,cuisine_type,uptime,downtime,menu=None):
         self.name = name
         self.cuisine_type = cuisine_type
         self.uptime = uptime
@@ -22,11 +13,15 @@ class Restaurant:
         else:
             self.menu = list(menu)
     def describe_restaurant(self):
-        print("{self.name} serves {self.cuisine_type}. The restaurant opens at {self.uptime} and closes at {self.downtime}.")
-        if #TODO:
+        print(f"{self.name} serves {self.cuisine_type}.")
+        now = datetime.now()
+        current_hour = int(now.strftime("%H"))
+        if self.uptime <= current_hour or self.downtime > current_hour:
             print("The restaurant is currently open.")
+            return True
         else:
             print("The restaurant is currently closed.")
+            return False
     def load_menu(self):
         try:
             with open("menu.json", "r") as file:
@@ -74,9 +69,9 @@ class Restaurant:
         low_supply = [self.item for self.item in self.menu if int(self.item["avail"]) <= supply_query]
         print(low_supply)
     def decrement_stock(self):
+        self.load.menu()
         self.item["avail"] -= 1
         self.write_menu()
-        return self.menu
     def restock(self,stock,restock):
         self.load_menu()
         for self.item in self.menu:
@@ -84,14 +79,14 @@ class Restaurant:
                 self.item["avail"] += restock
                 self.write_menu()
     def destock(self,discontinue):
+        self.load_menu()
         for self.item in self.menu:
-            if self.item["order"] == discontinue.title():
+            if discontinue.title() in self.item["order"]:
                 self.menu.remove(self.item)
-                return
+                self.write_menu()
     def customer_order(self):
-        if #TODO:
-            print("{self.name} is closed. {self.name} opens at {self.uptime}.")
-        else:
+        operational = self.describe_restaurant()
+        if operational == True:
             self.load_menu()
             self.print_menu()
             customer_allergy = input("Do you have any food allergies? ").lower()
@@ -101,17 +96,14 @@ class Restaurant:
                     break
                 for self.item in self.menu:
                     if order in self.item["order"]:
-                        if self.item["service"] #TODO:
-                            if customer_allergy == "yes" and self.item["allergy"] == True:
-                                print("I'm sorry but you appear to be allergic.")
-                            elif int(self.item["avail"]) > 0:
-                                self.decrement_stock()
-                                print("We'll have that right out to you.")
-                            else:
-                                print("I'm sorry but we're out of that right now.")
+                        if customer_allergy == "yes" and self.item["allergy"] == True:
+                            print("I'm sorry but you appear to be allergic.")
+                        elif int(self.item["avail"]) > 0:
+                            self.decrement_stock()
+                            print("We'll have that right out to you.")
                         else:
-                            print("{self.name} doesn't serve {self.item} at this time of day.")
+                            print("I'm sorry but we're out of that right now.")
 
 if __name__ == "__main__":
-    izakaya = Restaurant("Alice's Restaurant","American","8am","3am")
+    izakaya = Restaurant("Alice's Restaurant","American",8,3)
     izakaya.customer_order()
