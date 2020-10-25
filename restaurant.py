@@ -13,7 +13,14 @@ class Restaurant:
         else:
             self.menu = list(menu)
     def describe_restaurant(self):
-        print(f"{self.name} serves {self.cuisine_type}.")
+        if self.uptime < 12 and self.downtime < 12:
+            print(f"{self.name} serves {self.cuisine_type}. The restaurant opens at {self.uptime}am and closes at {self.downtime}am.")
+        elif self.uptime >= 12 and self.downtime < 12:
+            print(f"{self.name} serves {self.cuisine_type}. The restaurant opens at {self.uptime}pm and closes at {self.downtime}am.")
+        elif self.uptime >= 12 and self.downtime >= 12:
+            print(f"{self.name} serves {self.cuisine_type}. The restaurant opens at {self.uptime}pm and closes at {self.downtime}pm.")
+        else:
+            print(f"{self.name} serves {self.cuisine_type}. The restaurant opens at {self.uptime}am and closes at {self.downtime}pm.")
         now = datetime.now()
         current_hour = int(now.strftime("%H"))
         if self.uptime <= current_hour or self.downtime > current_hour:
