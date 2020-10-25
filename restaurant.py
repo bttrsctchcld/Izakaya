@@ -1,4 +1,5 @@
-import json,datetime
+from datetime import datetime
+import json
 
 # assign hours of operation for the restaurant and hours of availability for menu items depending on "service" value
     # breakfast 8am-12pm
@@ -13,8 +14,8 @@ class Restaurant:
     def __init__(self,name,cuisine_type,uptime,downtime):
         self.name = name
         self.cuisine_type = cuisine_type
-        self.uptime = #TODO
-        self.downtime = #TODO
+        self.uptime = uptime
+        self.downtime = downtime
         self.item = {"order" : None, "taste" : None, "price" : 0.00, "avail" : 0, "service" : None, "allergy" : False}
         if menu is None:
             self.menu = []
@@ -112,5 +113,5 @@ class Restaurant:
                             print("{self.name} doesn't serve {self.item} at this time of day.")
 
 if __name__ == "__main__":
-    izakaya = Restaurant("Alice's Restaurant","American")
+    izakaya = Restaurant("Alice's Restaurant","American","8am","3am")
     izakaya.customer_order()
