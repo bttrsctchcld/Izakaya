@@ -1,11 +1,18 @@
 import copy, json
 
+# reformat the menu from a list of dictionaries to a list of tuples
+# write a function to delete menu items
+# use datetime to rewrite open_restaurant(): assign hours of operation and express whether the restaurant is currently open/closed
+
 class Restaurant:
     def __init__(self, name, cuisine_type):
         self.name = name
         self.cuisine_type = cuisine_type
         self.item = {"order" : None, "taste" : None, "price" : 0.00, "avail" : 0, "service" : None, "allergy" : False}
-        self.menu = []
+        if menu is None:
+            self.menu = []
+        else:
+            self.menu = list(menu)
     def describe_restaurant(self):
         print(f"{self.name} serves {self.cuisine_type}.")
     def open_restaurant(self):
@@ -41,7 +48,7 @@ class Restaurant:
             allergy = input("Are there high-risk allergies associated with this item? ").lower()
             if allergy == "yes":
                 self.item["allergy"] = True
-            self.menu.append(copy.copy(self.item))
+            self.menu.append(self.item)
             prompt = input("Any more additions to the menu? ").lower()
             if prompt != "yes":
                 break

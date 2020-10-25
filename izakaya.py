@@ -1,6 +1,8 @@
 from restaurant import *
 from parlor import *
 
+# rewrite the user menu as a dictionary
+
 restaurant_name = input("What's your restaurant's name? ").title()
 restaurant_style = input("What style of cuisine does your restaurant serve? ").title()
 parlor_base_price = float(input("What's the base price for a serving from your ice cream menu? "))
