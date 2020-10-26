@@ -31,39 +31,27 @@ class Restaurant:
             return False
     def load_menu(self):
         try:
-            with open("menu.json", "r") as file:
+            with open("menu.json","r") as file:
                 self.menu = json.loads(file.read())
         except IOError:
             print("Missing menu file.")
         return self.menu
     def write_menu(self):
-        with open("menu.json", "w") as file:
+        with open("menu.json","w") as file:
             json.dump(self.menu,file)
-    def update_menu(self):
+    def update_menu(self,order,taste,price,avail,service,allergy):
         self.load_menu()
-        while True:
-            order = input("What's new on the menu today? ").title()
-            if order not in self.item.values():
-                self.item["order"] = order
-            else:
-                continue
-            self.item["taste"] = input(str("Describe the item in a sentence or two. "))
-            price = float(input("What's the market price? "))
-            if price >= 0.00:
-                self.item["price"] = price
-            avail = int(input("How many orders can we serve today? "))
-            if avail >= 0:
-                self.item["avail"] = avail
-            service = input("For which service: breakfast, lunch, appetizer, entree, dessert, cafe, or bar? ").lower()
-            if service in ("breakfast", "lunch", "appetizer", "entree", "dessert", "cafe", "bar"):
-                self.item["service"] = service
-            allergy = input("Are there high-risk allergies associated with this item? ").lower()
-            if allergy == "yes":
-                self.item["allergy"] = True
-            self.menu.append(self.item)
-            prompt = input("Any more additions to the menu? ").lower()
-            if prompt != "yes":
-                break
+        if order not in self.item.values():
+            self.item["order"] = order
+        self.item["taste"] = taste
+        if price >= 0.00:
+            self.item["price"] = price
+        if avail >= 0:
+            self.item["avail"] = avail
+        if service in ("breakfast","lunch","appetizer","entree","dessert","cafe","bar"):
+            self.item["service"] = service
+        self.item["allergy"] = allergy
+        self.menu.append(self.item)
         self.write_menu()
     def print_menu(self,menu_query="full"):
         self.load_menu()
