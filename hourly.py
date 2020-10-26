@@ -1,3 +1,5 @@
+# pass uptime and downtime, as 0-23 integers, to hourly() and return AM/PM strings
+
 def hourly(self):
     def decorate(func):
         def hours (*_args):
