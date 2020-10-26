@@ -1,50 +1,113 @@
-from restaurant import *
-from parlor import *
+from datetime import datetime
+import json
 
-# rewrite the user menu as a dictionary
+class Restaurant:
+    def __init__(self,name,cuisine_type,uptime,downtime,menu=None):
+        self.name = name
+        self.cuisine_type = cuisine_type
+        self.uptime = uptime
+        self.downtime = downtime
+        self.item = {"order" : None, "taste" : None, "price" : 0.00, "avail" : 0, "service" : None, "allergy" : False}
+        if menu is None:
+            self.menu = []
+        else:
+            self.menu = list(menu)
+    def describe_restaurant(self):
+        if self.uptime < 12 and self.downtime < 12:
+            print(f"{self.name} serves {self.cuisine_type}. The restaurant opens at {self.uptime}am and closes at {self.downtime}am.")
+        elif self.uptime >= 12 and self.downtime < 12:
+            print(f"{self.name} serves {self.cuisine_type}. The restaurant opens at {self.uptime - 12}pm and closes at {self.downtime}am.")
+        elif self.uptime >= 12 and self.downtime >= 12:
+            print(f"{self.name} serves {self.cuisine_type}. The restaurant opens at {self.uptime - 12}pm and closes at {self.downtime - 12}pm.")
+        else:
+            print(f"{self.name} serves {self.cuisine_type}. The restaurant opens at {self.uptime}am and closes at {self.downtime - 12}pm.")
+        now = datetime.now()
+        current_hour = int(now.strftime("%H"))
+        if (self.uptime < self.downtime and self.uptime <= current_hour < self.downtime) or (self.uptime > self.downtime and (current_hour >= self.uptime or current_hour < self.downtime)):
+            print("The restaurant is currently open.")
+            return True
+        else:
+            print("The restaurant is currently closed.")
+            return False
+    def load_menu(self):
+        try:
+            with open("menu.json", "r") as file:
+                self.menu = json.loads(file.read())
+        except IOError:
+            print("Missing menu file.")
+        return self.menu
+    def write_menu(self):
+        with open("menu.json", "w") as file:
+            json.dump(self.menu,file)
+    def update_menu(self):
+        self.load_menu()
+        while True:
+            order = input("What's new on the menu today? ").title()
+            if order not in self.item.values():
+                self.item["order"] = order
+            else:
+                continue
+            self.item["taste"] = input(str("Describe the item in a sentence or two. "))
+            price = float(input("What's the market price? "))
+            if price >= 0.00:
+                self.item["price"] = price
+            avail = int(input("How many orders can we serve today? "))
+            if avail >= 0:
+                self.item["avail"] = avail
+            service = input("For which service: breakfast, lunch, appetizer, entree, dessert, cafe, or bar? ").lower()
+            if service in ("breakfast", "lunch", "appetizer", "entree", "dessert", "cafe", "bar"):
+                self.item["service"] = service
+            allergy = input("Are there high-risk allergies associated with this item? ").lower()
+            if allergy == "yes":
+                self.item["allergy"] = True
+            self.menu.append(self.item)
+            prompt = input("Any more additions to the menu? ").lower()
+            if prompt != "yes":
+                break
+        self.write_menu()
+    def print_menu(self,menu_query="full"):
+        self.load_menu()
+        service_menu = [self.item for self.item in self.menu if menu_query.lower() in self.item["service"] or menu_query == "full"]
+        for self.item in service_menu:
+            print(f'\n\t{self.item["order"]}, {self.item["taste"]}, {self.item["price"]}')
+    def take_stock(self):
+        self.load_menu()
+        supply_query = int(input("What's the maximum stock for current inventory you want to review? "))
+        low_supply = [self.item for self.item in self.menu if int(self.item["avail"]) <= supply_query]
+        print(low_supply)
+    def restock(self,stock,restock):
+        self.load_menu()
+        for self.item in self.menu:
+            if stock.title() in self.item["order"]:
+                self.item["avail"] += restock
+                self.write_menu()
+    def destock(self,discontinue):
+        self.load_menu()
+        for self.item in self.menu:
+            if discontinue.title() in self.item["order"]:
+                self.menu.remove(self.item)
+                self.write_menu()
+    def customer_order(self):
+        operational = self.describe_restaurant()
+        if operational == True:
+            self.load_menu()
+            self.print_menu()
+            customer_allergy = input("Do you have any food allergies? ").lower()
+            while True:
+                order = input("What would you like to order? ").title()
+                if order == "Q":
+                    break
+                for self.item in self.menu:
+                    if order in self.item["order"]:
+                        if customer_allergy == "yes" and self.item["allergy"] == True:
+                            print("I'm sorry but you appear to be allergic.")
+                        elif int(self.item["avail"]) > 0:
+                            self.item["avail"] -= 1
+                            self.write_menu()
+                            print("We'll have that right out to you.")
+                        else:
+                            print("I'm sorry but we're out of that right now.")
 
-restaurant_name = input("What's your restaurant's name? ").title()
-restaurant_style = input("What style of cuisine does your restaurant serve? ").title()
-parlor_base_price = float(input("What's the base price for a serving from your ice cream menu? "))
-parlor_size_premium = float(input("What's the price premium for size increases? "))
-parlor_scoop_premium = float(input("What's the price premium for scoop additions? "))
-
-my_restaurant = IceCreamParlor(restaurant_name, restaurant_style, parlor_base_price, parlor_scoop_premium, parlor_scoop_premium)
-my_restaurant.load_menu()
-my_restaurant.get_stored_flavors()
-
-dispatch = {
-        'load menu': my_restaurant.load_menu(),
-        "update menu": my_restaurant.update_menu(),
-        "print menu": my_restaurant.print_menu(),
-        "take stock": my_restaurant.take_stock(),
-        "decrement stock": my_restaurant.decrement_stock(),
-        "restock": my_restaurant.restock(),
-        "customer order": my_restaurant.customer_order(),
-        "load flavors": my_restaurant.get_stored_flavors(),
-        "update flavors": my_restaurant.update_flavors(),
-        "print flavors": my_restaurant.describe_flavors(),
-        "customer ticket": my_restaurant.customer_ticket(),
-}
-
-while True:
-    general_query = input("""
-	
-	What would you like to do?
-	    
-	    load menu  *  update menu  *  print menu
-
-	    take stock  *  decrement stock  *  restock
-
-	    customer order
-
-	    load flavors  *  update flavors  *  print flavors
-
-	    customer ticket
-
-	    """).lower()
-
-    if general_query == "q":
-	break
-    else:
-        #TODO
+if __name__ == "__main__":
+    izakaya = Restaurant("Alice's Restaurant","American",8,2)
+    izakaya.customer_order()
