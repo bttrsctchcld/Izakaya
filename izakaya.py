@@ -95,7 +95,6 @@ class Restaurant:
                             print("We'll have that right out to you.")
                         else:
                             print("I'm sorry but we're out of that right now.")
-
 if __name__ == "__main__":
     izakaya = Restaurant("Alice's Restaurant","American",8,2)
     izakaya.customer_order()
