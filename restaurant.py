@@ -16,14 +16,14 @@ class Restaurant:
         if self.uptime < 12 and self.downtime < 12:
             print(f"{self.name} serves {self.cuisine_type}. The restaurant opens at {self.uptime}am and closes at {self.downtime}am.")
         elif self.uptime >= 12 and self.downtime < 12:
-            print(f"{self.name} serves {self.cuisine_type}. The restaurant opens at {self.uptime}pm and closes at {self.downtime}am.")
+            print(f"{self.name} serves {self.cuisine_type}. The restaurant opens at {self.uptime - 12}pm and closes at {self.downtime}am.")
         elif self.uptime >= 12 and self.downtime >= 12:
-            print(f"{self.name} serves {self.cuisine_type}. The restaurant opens at {self.uptime}pm and closes at {self.downtime}pm.")
+            print(f"{self.name} serves {self.cuisine_type}. The restaurant opens at {self.uptime - 12}pm and closes at {self.downtime - 12}pm.")
         else:
-            print(f"{self.name} serves {self.cuisine_type}. The restaurant opens at {self.uptime}am and closes at {self.downtime}pm.")
+            print(f"{self.name} serves {self.cuisine_type}. The restaurant opens at {self.uptime}am and closes at {self.downtime - 12}pm.")
         now = datetime.now()
         current_hour = int(now.strftime("%H"))
-        if self.uptime <= current_hour or self.downtime > current_hour:
+        if (self.uptime < self.downtime and self.uptime <= current_hour < self.downtime) or (self.uptime > self.downtime and (current_hour > self.uptime or current_hour < self.downtime)):
             print("The restaurant is currently open.")
             return True
         else:
@@ -112,5 +112,5 @@ class Restaurant:
                             print("I'm sorry but we're out of that right now.")
 
 if __name__ == "__main__":
-    izakaya = Restaurant("Alice's Restaurant","American",8,3)
+    izakaya = Restaurant("Alice's Restaurant","American",8,2)
     izakaya.customer_order()
