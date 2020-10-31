@@ -1,5 +1,4 @@
 from datetime import datetime
-from hourly import hourly
 import json
 
 class Restaurant:
@@ -13,7 +12,6 @@ class Restaurant:
             self.menu = []
         else:
             self.menu = list(menu)
-    @hourly
     def describe_restaurant(self):
         if self.uptime < 12 and self.downtime < 12:
             print(f"{self.name} serves {self.cuisine_type}. The restaurant opens at {self.uptime}am and closes at {self.downtime}am.")
