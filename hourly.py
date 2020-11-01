@@ -8,20 +8,20 @@ def hourly(func):
         now = datetime.now()
         current_hour = int(now.strftime("%H"))
 
-        if self.uptime == "12am":
-            real_uptime = 0
-        elif "pm" in self.uptime:
-            real_uptime = int("".join(filter(str.isdigit,self.uptime))) + 12
-        else:
-            real_uptime = int("".join(filter(str.isdigit,self.uptime))) 
+        string_times = (self.uptime,self.downtime)
+        real_times = []
 
-        if self.downtime == "12am":
-            real_downtime = 0
-        elif "pm" in self.downtime:
-            real_downtime = int("".join(filter(str.isdigit,self.downtime)))  + 12
-        else:
-            real_downtime = int("".join(filter(str.isdigit,self.downtime))) 
-        
+        for time in string_times:
+            if time == "12am":
+                real_time = 0
+            elif "pm" in time:
+                real_time = int("".join(filter(str.isdigit,time))) + 12
+            else:
+                real_time = int("".join(filter(str.isdigit,time)))
+            real_times.append(real_time)
+
+        real_uptime,real_downtime = real_times
+
         if (real_uptime < real_downtime and real_uptime <= current_hour < real_downtime) or (real_uptime > real_downtime and (current_hour >= real_uptime or current_hour < real_downtime)):
             print("The restaurant is currently open.")
             return True
