@@ -3,26 +3,26 @@ from datetime import datetime
 def hourly(func):
     def decorate(self):
 
-        if self.uptime == 0:
-            print_uptime = "midnight"
-        elif self.uptime > 0 and self.uptime < 12:
-            print_uptime = str(self.uptime) + "am"
-        else:
-            print_uptime = str(self.uptime - 12) + "pm"
-
-        if self.downtime == 0:
-            print_downtime = "midnight"
-        elif self.downtime > 0 and self.downtime < 12:
-            print_downtime = str(self.downtime) + "am"
-        else:
-            print_downtime = str(self.downtime - 12) + "pm"
-        
-        print(f"{self.name} serves {self.cuisine_type}. The restaurant opens at {print_uptime} and closes at {print_downtime}.")
+        print(f"{self.name} serves {self.cuisine_type}. The restaurant opens at {self.uptime} and closes at {self.downtime}.")
 
         now = datetime.now()
         current_hour = int(now.strftime("%H"))
+
+        if self.uptime == "12am":
+            real_uptime = 0
+        elif "pm" in self.uptime:
+            real_uptime = int("".join(filter(str.isdigit,self.uptime))) + 12
+        else:
+            real_uptime = int("".join(filter(str.isdigit,self.uptime))) 
+
+        if self.downtime == "12am":
+            real_downtime = 0
+        elif "pm" in self.downtime:
+            real_downtime = int("".join(filter(str.isdigit,self.downtime)))  + 12
+        else:
+            real_downtime = int("".join(filter(str.isdigit,self.downtime))) 
         
-        if (self.uptime < self.downtime and self.uptime <= current_hour < self.downtime) or (self.uptime > self.downtime and (current_hour >= self.uptime or current_hour < self.downtime)):
+        if (real_uptime < real_downtime and real_uptime <= current_hour < real_downtime) or (real_uptime > real_downtime and (current_hour >= real_uptime or current_hour < real_downtime)):
             print("The restaurant is currently open.")
             return True
         else:

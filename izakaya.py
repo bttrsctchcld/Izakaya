@@ -92,5 +92,5 @@ class Restaurant:
                             print("I'm sorry but we're out of that right now.")
 
 if __name__ == "__main__":
-    izakaya = Restaurant("Alice's Restaurant","American",8,0)
-    izakaya.customer_order()
+    izakaya = Restaurant("Alice's Restaurant","American","8am","12am")
+    izakaya.describe_restaurant()
