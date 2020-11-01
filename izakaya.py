@@ -1,4 +1,5 @@
 from hourly import hourly
+from datetime import datetime
 import json
 
 class Restaurant:
@@ -13,9 +14,17 @@ class Restaurant:
         else:
             self.menu = list(menu)
     
-    @hourly
     def describe_restaurant(self):
-        pass
+        print(f"{self.name} serves {self.cuisine_type}. The restaurant opens at {self.uptime} and closes at {self.downtime}.") 
+        real_uptime,real_downtime = hourly(self.uptime,self.downtime)
+        now = datetime.now()
+        current_hour = int(now.strftime("%H"))
+        if (real_uptime < real_downtime and real_uptime <= current_hour < real_downtime) or (real_uptime > real_downtime and (current_hour >= real_uptime or current_hour < real_downtime)):
+            print("The restaurant is currently open.")
+            return True
+        else:
+            print("The restaurant is currently closed.")
+            return False
     
     def load_menu(self):
         try:
