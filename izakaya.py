@@ -1,4 +1,4 @@
-from datetime import datetime
+from hourly import hourly
 import json
 
 class Restaurant:
@@ -12,23 +12,11 @@ class Restaurant:
             self.menu = []
         else:
             self.menu = list(menu)
+    
+    @hourly
     def describe_restaurant(self):
-        if self.uptime < 12 and self.downtime < 12:
-            print(f"{self.name} serves {self.cuisine_type}. The restaurant opens at {self.uptime}am and closes at {self.downtime}am.")
-        elif self.uptime >= 12 and self.downtime < 12:
-            print(f"{self.name} serves {self.cuisine_type}. The restaurant opens at {self.uptime - 12}pm and closes at {self.downtime}am.")
-        elif self.uptime >= 12 and self.downtime >= 12:
-            print(f"{self.name} serves {self.cuisine_type}. The restaurant opens at {self.uptime - 12}pm and closes at {self.downtime - 12}pm.")
-        else:
-            print(f"{self.name} serves {self.cuisine_type}. The restaurant opens at {self.uptime}am and closes at {self.downtime - 12}pm.")
-        now = datetime.now()
-        current_hour = int(now.strftime("%H"))
-        if (self.uptime < self.downtime and self.uptime <= current_hour < self.downtime) or (self.uptime > self.downtime and (current_hour >= self.uptime or current_hour < self.downtime)):
-            print("The restaurant is currently open.")
-            return True
-        else:
-            print("The restaurant is currently closed.")
-            return False
+        pass
+    
     def load_menu(self):
         try:
             with open("menu.json","r") as file:
@@ -36,9 +24,11 @@ class Restaurant:
         except IOError:
             print("Missing menu file.")
         return self.menu
+    
     def write_menu(self):
         with open("menu.json","w") as file:
             json.dump(self.menu,file)
+    
     def update_menu(self,order,taste,price,avail,service,allergy):
         self.load_menu()
         if order not in self.item.values():
@@ -53,28 +43,33 @@ class Restaurant:
         self.item["allergy"] = allergy
         self.menu.append(self.item)
         self.write_menu()
+    
     def print_menu(self,menu_query="full"):
         self.load_menu()
         service_menu = [self.item for self.item in self.menu if menu_query.lower() in self.item["service"] or menu_query == "full"]
         for self.item in service_menu:
             print(f'\n\t{self.item["order"]}, {self.item["taste"]}, {self.item["price"]}')
+    
     def take_stock(self):
         self.load_menu()
         supply_query = int(input("What's the maximum stock for current inventory you want to review? "))
         low_supply = [self.item for self.item in self.menu if int(self.item["avail"]) <= supply_query]
         print(low_supply)
+    
     def restock(self,stock,restock):
         self.load_menu()
         for self.item in self.menu:
             if stock.title() in self.item["order"]:
                 self.item["avail"] += restock
                 self.write_menu()
+    
     def destock(self,discontinue):
         self.load_menu()
         for self.item in self.menu:
             if discontinue.title() in self.item["order"]:
                 self.menu.remove(self.item)
                 self.write_menu()
+    
     def customer_order(self):
         operational = self.describe_restaurant()
         if operational == True:
@@ -86,7 +81,7 @@ class Restaurant:
                 if order == "Q":
                     break
                 for self.item in self.menu:
-                    if order in self.item["order"]:
+                    if order.title() == self.item["order"]:
                         if customer_allergy == "yes" and self.item["allergy"] == True:
                             print("I'm sorry but you appear to be allergic.")
                         elif int(self.item["avail"]) > 0:
@@ -97,5 +92,5 @@ class Restaurant:
                             print("I'm sorry but we're out of that right now.")
 
 if __name__ == "__main__":
-    izakaya = Restaurant("Alice's Restaurant","American",8,2)
+    izakaya = Restaurant("Alice's Restaurant","American",8,0)
     izakaya.customer_order()
