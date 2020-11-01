@@ -16,9 +16,12 @@ def hourly(func):
             print_downtime = str(self.downtime) + "am"
         else:
             print_downtime = str(self.downtime - 12) + "pm"
+        
         print(f"{self.name} serves {self.cuisine_type}. The restaurant opens at {print_uptime} and closes at {print_downtime}.")
+
         now = datetime.now()
         current_hour = int(now.strftime("%H"))
+        
         if (self.uptime < self.downtime and self.uptime <= current_hour < self.downtime) or (self.uptime > self.downtime and (current_hour >= self.uptime or current_hour < self.downtime)):
             print("The restaurant is currently open.")
             return True
