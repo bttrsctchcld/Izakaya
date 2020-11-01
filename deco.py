@@ -14,6 +14,8 @@ def hourly(func):
         for time in string_times:
             if time == "12am":
                 real_time = 0
+            elif time == "12pm":
+                real_time = 12
             elif "pm" in time:
                 real_time = int("".join(filter(str.isdigit,time))) + 12
             else:
