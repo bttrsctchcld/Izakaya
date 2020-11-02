@@ -14,17 +14,19 @@ my_restaurant.load_menu()
 my_restaurant.get_stored_flavors()
 
 dispatch = {
-        'load menu': my_restaurant.load_menu(),
-        "update menu": my_restaurant.update_menu(),
-        "print menu": my_restaurant.print_menu(),
-        "take stock": my_restaurant.take_stock(),
-        "decrement stock": my_restaurant.decrement_stock(),
-        "restock": my_restaurant.restock(),
-        "customer order": my_restaurant.customer_order(),
-        "load flavors": my_restaurant.get_stored_flavors(),
-        "update flavors": my_restaurant.update_flavors(),
-        "print flavors": my_restaurant.describe_flavors(),
-        "customer ticket": my_restaurant.customer_ticket(),
+        "describe restaurant": my_restaurant.describe_restaurant,
+        "load menu": my_restaurant.load_menu,
+        "update menu": my_restaurant.update_menu,
+        "print menu": my_restaurant.print_menu,
+        "take stock": my_restaurant.take_stock,
+        "decrement stock": my_restaurant.decrement_stock,
+        "restock": my_restaurant.restock,
+        "destock": my_restaurant.destock,
+        "customer order": my_restaurant.customer_order,
+        "load flavors": my_restaurant.get_stored_flavors,
+        "update flavors": my_restaurant.update_flavors,
+        "print flavors": my_restaurant.describe_flavors,
+        "customer ticket": my_restaurant.customer_ticket,
 }
 
 while True:
@@ -34,7 +36,7 @@ while True:
 	    
 	    load menu  *  update menu  *  print menu
 
-	    take stock  *  decrement stock  *  restock
+	    take stock  *  decrement stock  *  restock  *  destock
 
 	    customer order
 
@@ -47,4 +49,5 @@ while True:
     if general_query == "q":
 	break
     else:
-        #TODO
+        #TODO:
+        dispatch[general_query]()
