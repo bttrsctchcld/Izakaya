@@ -1,4 +1,4 @@
-from restaurant import Restaurant
+from izakaya import Restaurant
 
 class IceCreamParlor(Restaurant):
     def __init__(self, name, cuisine_type, base_price, extra_size, extra_scoop, *flavors):
