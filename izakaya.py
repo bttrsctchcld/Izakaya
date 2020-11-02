@@ -68,14 +68,14 @@ class Restaurant:
     def restock(self,stock,restock):
         self.load_menu()
         for self.item in self.menu:
-            if stock.title() in self.item["order"]:
+            if stock.title() == self.item["order"]:
                 self.item["avail"] += restock
                 self.write_menu()
     
     def destock(self,discontinue):
         self.load_menu()
         for self.item in self.menu:
-            if discontinue.title() in self.item["order"]:
+            if discontinue.title() == self.item["order"]:
                 self.menu.remove(self.item)
                 self.write_menu()
     
