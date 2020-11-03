@@ -1,5 +1,4 @@
-# using hourly(), describe_restaurant() should prohibit orders outside of service
-# create Ticket class which names restaurant, stores orders and calculates payment
+# create Ticket class which opens tickets, stores orders, calculates payment, and closes tickets
 # Ticket doesn't need to be child class in re Restaurant
 # Ticket should I/O multiple orders as json
 # Ticket should "close" orders upon payment (it's your choice whether "close" should mean to delete)
