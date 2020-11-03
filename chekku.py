@@ -1,5 +1,4 @@
-# create Ticket class which opens tickets, stores orders, calculates payment, and closes tickets
-# Ticket doesn't need to be child class in re Restaurant
+# create Ticket subclass which opens tickets, stores orders, calculates payment, and closes tickets
 # Ticket should I/O multiple orders as json
 # Ticket should "close" orders upon payment (it's your choice whether "close" should mean to delete)
 # payment should account for prices, taxes, tips, and discounts; use decorators
