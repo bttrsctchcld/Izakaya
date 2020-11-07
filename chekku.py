@@ -3,7 +3,7 @@ from izakaya import Restaurant
 class Ticket(Restaurant):
     def __init__(self,tax=0,check=None):
         super().__init__(self)
-        self.order = {"order" : None, "price" : 0.00}
+        self.order = {"order" : None, "price" : 0.00, "quantity" : 1}
         if check is None:
             self.check = []
         else:
@@ -65,10 +65,6 @@ class Ticket(Restaurant):
         #TODO
     
     @discount
-    def senior_discount(self):
-        #TODO
-    
-    @discount
     def lockdown_discount(self):
         #TODO
 
@@ -77,7 +73,7 @@ class Ticket(Restaurant):
         for line in receipt:
             print(f"""
 
-                    quantity     {self.order["order"]}     ({self.order["price"] * quantity})
+                    quantity     {self.order["order"]}     ({self.order["price"] * self.order["quantity"})
 
                     """)
         print(f"""
