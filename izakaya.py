@@ -79,27 +79,6 @@ class Restaurant:
                 self.menu.remove(self.item)
                 self.write_menu()
     
-    def customer_order(self):
-        operational = self.describe_restaurant()
-        if operational == True:
-            self.load_menu()
-            self.print_menu()
-            customer_allergy = input("Do you have any food allergies? ").lower()
-            while True:
-                order = input("What would you like to order? ").title()
-                if order == "Q":
-                    break
-                for self.item in self.menu:
-                    if order.title() == self.item["order"]:
-                        if customer_allergy == "yes" and self.item["allergy"] == True:
-                            print("I'm sorry but you appear to be allergic.")
-                        elif int(self.item["avail"]) > 0:
-                            self.item["avail"] -= 1
-                            self.write_menu()
-                            print("We'll have that right out to you.")
-                        else:
-                            print("I'm sorry but we're out of that right now.")
-
 if __name__ == "__main__":
     izakaya = Restaurant("Alice's Restaurant","American","8am","12pm")
     izakaya.describe_restaurant()
