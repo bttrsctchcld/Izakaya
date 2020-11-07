@@ -51,6 +51,7 @@ class Restaurant:
             self.item["service"] = service
         self.item["allergy"] = allergy
         self.menu.append(self.item)
+        print(self.menu)
         self.write_menu()
     
     def print_menu(self,menu_query="full"):
@@ -81,4 +82,5 @@ class Restaurant:
     
 if __name__ == "__main__":
     izakaya = Restaurant("Alice's Restaurant","American","8am","12pm")
-    izakaya.describe_restaurant()
+    izakaya.update_menu("food","yum",1.00,100,"breakfast",False)
+    izakaya.update_menu("drink","yum",1.00,100,"breakfast",False)

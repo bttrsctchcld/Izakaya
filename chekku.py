@@ -1,8 +1,10 @@
 from izakaya import Restaurant
+from datetime import datetime
+import json
 
 class Ticket(Restaurant):
-    def __init__(self,tax=0,check=None):
-        super().__init__(self)
+    def __init__(self,name,cuisine_type,uptime,downtime,tax=0,check=None):
+        super().__init__(name,cuisine_type,uptime,downtime)
         self.order = {"order" : None, "price" : 0.00, "quantity" : 1}
         if check is None:
             self.check = []
@@ -10,12 +12,6 @@ class Ticket(Restaurant):
             self.check = list(check)
         self.tax = 1 + (tax / 100)
         self.total = sum([self.order["price"] for self.order in self.check]) * self.tax
-
-    def __len__(self):
-        return len(self.check)
-
-    def __repr__(self):
-        return self.name + " : " + str(self.total)
 
     def customer_order(self):
         operational = self.describe_restaurant()
@@ -32,7 +28,8 @@ class Ticket(Restaurant):
                         if customer_allergy == "yes" and self.item["allergy"] == True:
                             print("I'm sorry but you appear to be allergic.")
                         elif int(self.item["avail"]) > 0:
-                            update_check()
+                            self.update_check()
+                            print(self.check)
                             self.item["avail"] -= 1
                             self.write_menu()
                             print("We'll have that right out to you.")
@@ -45,35 +42,38 @@ class Ticket(Restaurant):
                 self.check = json.loads(file.read())
         except IOError:
                 print("Missing check.")
-            return self.check
+        return self.check
     
     def write_check(self):
         with open("chekku.json","w") as file:
             json.dump(self.check,file)
 
     def update_check(self):
-        self.order["order"],self.order["price"] = self.item["order"],self.item["price"]
-        self.check.append(self.order)
-        return self.check
-
-    @discount
-    def staff_meal(self):
-        #TODO
-
-    @discount
-    def employee_discount(self):
-        #TODO
+        if self.item["order"] not in self.order.values():
+            self.order["order"],self.order["price"],self.order["quantity"] = self.item["order"],self.item["price"],1
+            self.check.append(self.order)
+        else:
+            for self.order in self.check:
+                if self.item["order"] == self.order["order"]:
+                    self.order["quantity"] += 1
     
-    @discount
+    #@discount
+    def staff_meal(self):
+        pass
+
+    #@discount
+    def employee_discount(self):
+        pass
+    
+    #@discount
     def lockdown_discount(self):
-        #TODO
+        pass
 
     def print_check(self):
-        receipt = set(self.check)
-        for line in receipt:
+        for self.order in self.check:
             print(f"""
 
-                    quantity     {self.order["order"]}     ({self.order["price"] * self.order["quantity"})
+                    {self.order["quantity"]}     {self.order["order"]}     {self.order["price"] * self.order["quantity"]}
 
                     """)
         print(f"""
@@ -82,3 +82,7 @@ class Ticket(Restaurant):
                 ${self.total}
 
                 """)
+
+if __name__ == "__main__":
+    izakaya = Ticket("Alice's Restaurant","American","8am","12am",4.0)
+    izakaya.customer_order()
