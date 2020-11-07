@@ -75,5 +75,14 @@ class Ticket(Restaurant):
     def print_check(self):
         receipt = set(self.check)
         for line in receipt:
-            print(f"\t#TODO\t{self.order["order"]}\t({self.order["price"] * quantity)")
-        print(f"\n\n\nThank you for coming to {self.name} and please come again.\n\t${self.total}")
+            print(f"""
+
+                    quantity     {self.order["order"]}     ({self.order["price"] * quantity})
+
+                    """)
+        print(f"""
+
+            Thank you for coming to {self.name} and please come again.
+                ${self.total}
+
+                """)
