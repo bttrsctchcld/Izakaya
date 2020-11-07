@@ -56,6 +56,22 @@ class Ticket(Restaurant):
         self.check.append(self.order)
         return self.check
 
+    @discount
+    def staff_meal(self):
+        #TODO
+
+    @discount
+    def employee_discount(self):
+        #TODO
+    
+    @discount
+    def senior_discount(self):
+        #TODO
+    
+    @discount
+    def lockdown_discount(self):
+        #TODO
+
     def print_check(self):
         receipt = set(self.check)
         for line in receipt:
