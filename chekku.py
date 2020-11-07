@@ -1,15 +1,15 @@
 from izakaya import Restaurant
 
 class Ticket(Restaurant):
-    def __init__(self,check=None):
+    def __init__(self,tax=0,check=None):
         super().__init__(self)
         self.order = {"order" : None, "price" : 0.00}
         if check is None:
             self.check = []
         else:
             self.check = list(check)
-        self.total = total
-        self.total = sum([self.order["price"] for self.order in self.check])
+        self.tax = 1 + (tax / 100)
+        self.total = sum([self.order["price"] for self.order in self.check]) * self.tax
 
     def __len__(self):
         return len(self.check)
