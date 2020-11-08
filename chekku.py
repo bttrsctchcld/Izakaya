@@ -5,7 +5,6 @@ import json
 class Ticket(Restaurant):
     def __init__(self,name,cuisine_type,uptime,downtime,tip=0,employee=False,check=None):
         super().__init__(name,cuisine_type,uptime,downtime)
-        self.order = {"order" : None, "price" : 0.00, "quantity" : 1}
         if check is None:
             self.check = []
         else:
@@ -34,16 +33,9 @@ class Ticket(Restaurant):
                             break
                         elif int(self.item["avail"]) > 0:
                             self.item["avail"] -= 1
-                            
-                            for self.order in self.check:
-                                if self.item["order"] == self.order["order"]:
-                                    self.order["quantity"] += 1
-                                    break
-                            self.order["order"] = self.item["order"]
-                            self.order["price"] = self.item["price"]
-                            self.check.append(self.order)
+                            self.check.append(self.item)
                             self.write_menu()
-                            self.update_check()
+                            self.write_check()
                             print("We'll have that right out to you.")
                             break
                         else:
@@ -62,16 +54,6 @@ class Ticket(Restaurant):
         with open("chekku.json","w") as file:
             json.dump(self.check,file)
 
-    def update_check(self):
-        for self.order in self.check:
-            if self.item["order"] == self.order["order"]:
-                self.order["quantity"] += 1
-                print(self.check)
-                return
-        self.order["order"],self.order["price"] = self.item["order"],self.item["price"]
-        self.check.append(self.order)
-        print(self.check)
-    
     def adjustment(self,func):
         self.adjustments.append(func)
         return func
