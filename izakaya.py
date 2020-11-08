@@ -40,8 +40,7 @@ class Restaurant:
     
     def update_menu(self,order,taste,price,avail,service,allergy):
         self.load_menu()
-        if order not in self.item.values():
-            self.item["order"] = order
+        self.item["order"] = order.title()
         self.item["taste"] = taste
         if price >= 0.00:
             self.item["price"] = price
@@ -76,11 +75,10 @@ class Restaurant:
     def destock(self,discontinue):
         self.load_menu()
         for self.item in self.menu:
-            if discontinue.title() == self.item["order"]:
+            if discontinue == self.item["order"]:
                 self.menu.remove(self.item)
                 self.write_menu()
     
 if __name__ == "__main__":
     izakaya = Restaurant("Alice's Restaurant","American","8am","12pm")
-    izakaya.update_menu("food","yum",1.00,100,"breakfast",False)
-    izakaya.update_menu("drink","yum",1.00,100,"breakfast",False)
+    izakaya.describe_restaurant()

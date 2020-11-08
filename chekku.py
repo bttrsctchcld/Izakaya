@@ -3,20 +3,24 @@ from datetime import datetime
 import json
 
 class Ticket(Restaurant):
-    def __init__(self,name,cuisine_type,uptime,downtime,tax=0,check=None):
+    def __init__(self,name,cuisine_type,uptime,downtime,tip=0,employee=False,check=None):
         super().__init__(name,cuisine_type,uptime,downtime)
         self.order = {"order" : None, "price" : 0.00, "quantity" : 1}
         if check is None:
             self.check = []
         else:
             self.check = list(check)
-        self.tax = 1 + (tax / 100)
-        self.total = sum([self.order["price"] for self.order in self.check]) * self.tax
+        self.employee = employee
+        self.tip = 1 + (tip / 100)
+        self.adjustments = []
+        self.total = sum([self.order["price"] for self.order in self.check])
+        self.paid = False
 
     def customer_order(self):
         operational = self.describe_restaurant()
         if operational == True:
             self.load_menu()
+            self.load_check()
             self.print_menu()
             customer_allergy = input("Do you have any food allergies? ").lower()
             while True:
@@ -27,14 +31,24 @@ class Ticket(Restaurant):
                     if order.title() == self.item["order"]:
                         if customer_allergy == "yes" and self.item["allergy"] == True:
                             print("I'm sorry but you appear to be allergic.")
+                            break
                         elif int(self.item["avail"]) > 0:
-                            self.update_check()
-                            print(self.check)
                             self.item["avail"] -= 1
+                            
+                            for self.order in self.check:
+                                if self.item["order"] == self.order["order"]:
+                                    self.order["quantity"] += 1
+                                    break
+                            self.order["order"] = self.item["order"]
+                            self.order["price"] = self.item["price"]
+                            self.check.append(self.order)
                             self.write_menu()
+                            self.update_check()
                             print("We'll have that right out to you.")
+                            break
                         else:
                             print("I'm sorry but we're out of that right now.")
+                            break
 
     def load_check(self):
         try:
@@ -49,27 +63,35 @@ class Ticket(Restaurant):
             json.dump(self.check,file)
 
     def update_check(self):
-        if self.item["order"] not in self.order.values():
-            self.order["order"],self.order["price"],self.order["quantity"] = self.item["order"],self.item["price"],1
-            self.check.append(self.order)
-        else:
-            for self.order in self.check:
-                if self.item["order"] == self.order["order"]:
-                    self.order["quantity"] += 1
+        for self.order in self.check:
+            if self.item["order"] == self.order["order"]:
+                self.order["quantity"] += 1
+                print(self.check)
+                return
+        self.order["order"],self.order["price"] = self.item["order"],self.item["price"]
+        self.check.append(self.order)
+        print(self.check)
     
-    #@discount
+    def adjustment(self,func):
+        self.adjustments.append(func)
+        return func
+
+    @adjustment
+    def sales_tax(self):
+        return self.total * 1.04
+
+    @adjustment
     def staff_meal(self):
-        pass
+        return self.total * 0 if self.employee == True and self.total <= 20.00
 
-    #@discount
-    def employee_discount(self):
-        pass
+    @adjustment
+    def staff_discount(self):
+        return self.total * 0.50 if self.employee == True and self.total > 20.00
     
-    #@discount
-    def lockdown_discount(self):
-        pass
+    def final_adjustments(self):
+        print(self.adjustments)
 
-    def print_check(self):
+    def close_check(self):
         for self.order in self.check:
             print(f"""
 
@@ -79,9 +101,10 @@ class Ticket(Restaurant):
         print(f"""
 
             Thank you for coming to {self.name} and please come again.
-                ${self.total}
+                ${self.total * self.tip}
 
                 """)
+        self.paid = True
 
 if __name__ == "__main__":
     izakaya = Ticket("Alice's Restaurant","American","8am","12am",4.0)
