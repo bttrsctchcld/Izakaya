@@ -12,8 +12,6 @@ class Ticket(Restaurant):
         self.employee = employee
         self.tip = 1 + (tip / 100)
         self.adjustments = []
-        self.total = sum([self.order["price"] for self.order in self.check])
-        self.paid = False
 
     def customer_order(self):
         operational = self.describe_restaurant()
@@ -54,40 +52,34 @@ class Ticket(Restaurant):
         with open("chekku.json","w") as file:
             json.dump(self.check,file)
 
-    def adjustment(self,func):
-        self.adjustments.append(func)
-        return func
-
-    @adjustment
-    def sales_tax(self):
-        return self.total * 1.04
-
-    @adjustment
-    def staff_meal(self):
-        return self.total * 0 if self.employee == True and self.total <= 20.00
-
-    @adjustment
-    def staff_discount(self):
-        return self.total * 0.50 if self.employee == True and self.total > 20.00
-    
-    def final_adjustments(self):
-        print(self.adjustments)
-
     def close_check(self):
-        for self.order in self.check:
-            print(f"""
-
-                    {self.order["quantity"]}     {self.order["order"]}     {self.order["price"] * self.order["quantity"]}
-
-                    """)
+        receipt = list(set([self.item["order"] for self.item in self.check]))
         print(f"""
 
-            Thank you for coming to {self.name} and please come again.
-                ${self.total * self.tip}
+
+
+
+
+
+                           {self.name}
+
 
                 """)
-        self.paid = True
+        for unique_item in receipt:
+            quantity = 0
+            for self.item in self.check:
+                if unique_item == self.item["order"]:
+                    price = self.item["price"]
+                    quantity += 1
+            print(f"""
+                    {quantity}     {unique_item}     {price * quantity}
+                    """)
+        print(f"""
+            Thank you for coming to {self.name} and please come again.
+                ${round(sum([self.item["price"] for self.item in self.check]) * self.tip,2)}
+                """)
 
 if __name__ == "__main__":
-    izakaya = Ticket("Alice's Restaurant","American","8am","12am",4.0)
+    izakaya = Ticket("Alice's Restaurant","American","8am","12am",20.0)
     izakaya.customer_order()
+    izakaya.close_check()
