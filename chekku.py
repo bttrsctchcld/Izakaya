@@ -11,7 +11,13 @@ class Ticket(Restaurant):
             self.check = list(check)
         self.employee = employee
         self.tip = 1 + (tip / 100)
-        self.adjustments = []
+
+    def __str__(self):
+        total = self.calculate_total()
+        return "%s : $%.2f" % (self.name,total)
+
+    def __len__(self):
+        return len(self.check)
 
     def customer_order(self):
         operational = self.describe_restaurant()
@@ -51,8 +57,13 @@ class Ticket(Restaurant):
     def write_check(self):
         with open("chekku.json","w") as file:
             json.dump(self.check,file)
+    
+    def calculate_total(self):
+        total = round(sum([self.item["price"] for self.item in self.check]) * self.tip,2)
+        return total
 
     def close_check(self):
+        total = self.calculate_total()
         receipt = list(set([self.item["order"] for self.item in self.check]))
         print(f"""
 
@@ -76,10 +87,11 @@ class Ticket(Restaurant):
                     """)
         print(f"""
             Thank you for visiting {self.name} and please come again.
-                ${round(sum([self.item["price"] for self.item in self.check]) * self.tip,2)} (after {round((self.tip - 1) * 100,2)}% tip)
+                ${total} (after {round((self.tip - 1) * 100,2)}% tip)
                 """)
 
 if __name__ == "__main__":
-    izakaya = Ticket("Alice's Restaurant","American","8am","12am",20.0)
+    izakaya = Ticket("Alison's Restaurant","American","8am","12am",20.0)
     izakaya.customer_order()
     izakaya.close_check()
+
