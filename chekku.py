@@ -13,10 +13,12 @@ class Ticket(Restaurant):
         self.tip = 1 + (tip / 100)
 
     def __str__(self):
+        self.load_check()
         total = self.calculate_total()
         return "%s : $%.2f" % (self.name,total)
 
     def __len__(self):
+        self.load_check()
         return len(self.check)
 
     def customer_order(self):
@@ -92,6 +94,5 @@ class Ticket(Restaurant):
 
 if __name__ == "__main__":
     izakaya = Ticket("Alison's Restaurant","American","8am","12am",20.0)
-    izakaya.customer_order()
-    izakaya.close_check()
-
+    print(len(izakaya))
+    print(izakaya)
