@@ -75,8 +75,8 @@ class Ticket(Restaurant):
                     {quantity}     {unique_item}     {price * quantity}
                     """)
         print(f"""
-            Thank you for coming to {self.name} and please come again.
-                ${round(sum([self.item["price"] for self.item in self.check]) * self.tip,2)}
+            Thank you for visiting {self.name} and please come again.
+                ${round(sum([self.item["price"] for self.item in self.check]) * self.tip,2)} (after {round((self.tip - 1) * 100,2)}% tip)
                 """)
 
 if __name__ == "__main__":
