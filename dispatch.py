@@ -17,7 +17,6 @@ dispatch = {
         "take stock": my_restaurant.take_stock,
         "restock": my_restaurant.restock,
         "destock": my_restaurant.destock,
-        "customer order": my_restaurant.customer_order,
 }
 
 while True:
@@ -28,8 +27,6 @@ while True:
 	    load menu  *  update menu  *  print menu
 
 	    take stock  *  restock  *  destock
-
-	    customer order
 
 	    """).lower()
 

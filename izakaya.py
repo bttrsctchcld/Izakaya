@@ -40,7 +40,9 @@ class Restaurant:
     
     def update_menu(self,order,taste,price,avail,service,allergy):
         self.load_menu()
-        self.item["order"] = order.title()
+        inventory = [self.item["order"] for self.item in self.menu]
+        if not order.title() in inventory: 
+            self.item["order"] = order.title()
         self.item["taste"] = taste
         if price >= 0.00:
             self.item["price"] = price

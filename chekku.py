@@ -94,5 +94,5 @@ class Ticket(Restaurant):
 
 if __name__ == "__main__":
     izakaya = Ticket("Alison's Restaurant","American","8am","12am",20.0)
-    print(len(izakaya))
-    print(izakaya)
+    izakaya.customer_order()
+    izakaya.close_check()
