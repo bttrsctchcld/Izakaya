@@ -1,5 +1,4 @@
 from izakaya import Restaurant
-from discount import *
 from datetime import datetime
 import json
 
@@ -78,7 +77,6 @@ class Ticket(Restaurant):
         for self.item in self.check:
             if comp.title() == self.item["order"]:
                 self.item["price"] = 0.00
-                self.check.append(self.item)
                 break
         self.write_check()
 
@@ -90,7 +88,7 @@ class Ticket(Restaurant):
         self.total = self.calculate_total()
         return round(self.total * 0.00 if self.total <= 20.00 else self.total - 20.00,2)
 
-    def close_check(self):
+    def simple_receipt(self):
         self.total = self.calculate_total() if self.employee == False else self.staff_meal()
         receipt = list(set([self.item["order"] for self.item in self.check]))
         print(f"""
@@ -118,7 +116,30 @@ class Ticket(Restaurant):
                 ${self.total} (after {round((self.tip - 1) * 100,2)}% tip)
                 """)
 
+    def itemized_receipt(self):
+        self.total = self.calculate_total() if self.employee == False else self.staff_meal()
+        print(f"""
+
+
+
+
+
+
+                           {self.name}
+
+
+                """)
+        for self.item in sorted(self.check,key=lambda n: n["price"],reverse=True):
+            print(f"""
+                              {self.item["order"]}     {self.item["price"]}
+                    """)
+        print(f"""
+            Thank you for visiting {self.name} and please come again.
+                ${self.total} (after {round((self.tip - 1) * 100,2)}% tip)
+                """)
+
 if __name__ == "__main__":
     izakaya = Ticket("Alison's Restaurant","American","8am","12am",20.0)
     izakaya.customer_order()
-    izakaya.close_check()
+    izakaya.simple_receipt()
+    izakaya.itemized_receipt()
