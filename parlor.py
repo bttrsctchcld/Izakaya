@@ -8,11 +8,13 @@ class IceCreamParlor(Restaurant):
         self.extra_size = extra_size
         self.extra_scoop = extra_scoop
         self.sizes = {"Small" : self.base_price, "Medium" : self.base_price + self.extra_size, "Large" : self.base_price + (self.extra_size * 2)}
+
     def get_stored_flavors(self, *flavors):
         filename = "flavors.txt"
         with open(filename, "r") as file:
             self.flavors = file.read().split(",")
         return self.flavors
+
     def update_flavors(self, *flavors):
         self.get_stored_flavors(self, *flavors)
         while True:
@@ -27,10 +29,12 @@ class IceCreamParlor(Restaurant):
         with open(filename, "w") as file:
             new_flavors = ",".join(map(str, self.flavors))
             file.write(new_flavors)
+
     def describe_flavors(self, *flavors):
         menu = self.get_stored_flavors(*flavors)
         menu = ", ".join(map(str, menu))[2:]
         print(f"{self.name} serves {menu}.")
+
     def customer_ticket(self, *flavors):
         self.get_stored_flavors(self, *flavors)
         customer_flavor = input("Which flavor would you like? ").title()
