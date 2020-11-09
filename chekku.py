@@ -1,4 +1,5 @@
 from izakaya import Restaurant
+from discount import *
 from datetime import datetime
 import json
 
@@ -17,6 +18,10 @@ class Ticket(Restaurant):
         total = self.calculate_total()
         return "%s : $%.2f" % (self.name,total)
 
+    def __iter__(self):
+        self.load_check()
+        return(self.item["order"] for self.item in self.check)
+    
     def __len__(self):
         self.load_check()
         return len(self.check)
