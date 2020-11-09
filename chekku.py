@@ -15,8 +15,8 @@ class Ticket(Restaurant):
 
     def __str__(self):
         self.load_check()
-        total = self.calculate_total()
-        return "%s : $%.2f" % (self.name,total)
+        self.total = self.calculate_total()
+        return "%s : $%.2f" % (self.name,self.total)
 
     def __iter__(self):
         self.load_check()
@@ -66,15 +66,15 @@ class Ticket(Restaurant):
             json.dump(self.check,file)
     
     def calculate_total(self):
-        total = round(sum([self.item["price"] for self.item in self.check]) * self.tip,2)
-        return total
+        self.total = round(sum([self.item["price"] for self.item in self.check]) * self.tip,2)
+        return self.total
 
     def staff_meal(self):
-        total = self.calculate_total()
-        return round(total * 0.00 if total <= 20.00 else total - 20.00,2)
+        self.total = self.calculate_total()
+        return round(self.total * 0.00 if self.total <= 20.00 else self.total - 20.00,2)
 
     def close_check(self):
-        total = self.calculate_total() if self.employee == False else self.staff_meal()
+        self.total = self.calculate_total() if self.employee == False else self.staff_meal()
         receipt = list(set([self.item["order"] for self.item in self.check]))
         print(f"""
 
@@ -98,7 +98,7 @@ class Ticket(Restaurant):
                     """)
         print(f"""
             Thank you for visiting {self.name} and please come again.
-                ${total} (after {round((self.tip - 1) * 100,2)}% tip)
+                ${self.total} (after {round((self.tip - 1) * 100,2)}% tip)
                 """)
 
 if __name__ == "__main__":
