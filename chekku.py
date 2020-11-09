@@ -64,8 +64,12 @@ class Ticket(Restaurant):
         total = round(sum([self.item["price"] for self.item in self.check]) * self.tip,2)
         return total
 
-    def close_check(self):
+    def staff_meal(self):
         total = self.calculate_total()
+        return round(total * 0.00 if total <= 20.00 else total - 20.00,2)
+
+    def close_check(self):
+        total = self.calculate_total() if self.employee == False else self.staff_meal()
         receipt = list(set([self.item["order"] for self.item in self.check]))
         print(f"""
 
