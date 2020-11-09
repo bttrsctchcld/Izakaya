@@ -65,6 +65,23 @@ class Ticket(Restaurant):
         with open("chekku.json","w") as file:
             json.dump(self.check,file)
     
+    def strike_order(self,strike):
+        self.load_check()
+        for self.item in self.check:
+            if strike.title() == self.item["order"]:
+                self.check.remove(self.item)
+                break
+        self.write_check()
+
+    def comp_order(self,comp):
+        self.load_check()
+        for self.item in self.check:
+            if comp.title() == self.item["order"]:
+                self.item["price"] = 0.00
+                self.check.append(self.item)
+                break
+        self.write_check()
+
     def calculate_total(self):
         self.total = round(sum([self.item["price"] for self.item in self.check]) * self.tip,2)
         return self.total

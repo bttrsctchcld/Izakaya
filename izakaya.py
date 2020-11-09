@@ -72,14 +72,14 @@ class Restaurant:
         for self.item in self.menu:
             if stock.title() == self.item["order"]:
                 self.item["avail"] += restock
-                self.write_menu()
+        self.write_menu()
     
     def destock(self,discontinue):
         self.load_menu()
         for self.item in self.menu:
             if discontinue == self.item["order"]:
                 self.menu.remove(self.item)
-                self.write_menu()
+        self.write_menu()
     
 if __name__ == "__main__":
     izakaya = Restaurant("Alice's Restaurant","American","8am","12pm")
