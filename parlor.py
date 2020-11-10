@@ -1,8 +1,8 @@
 from izakaya import Restaurant
 
-class IceCreamParlor(Restaurant):
-    def __init__(self, name, cuisine_type, base_price, extra_size, extra_scoop, *flavors):
-        super().__init__(name, cuisine_type)
+class Parlor(Restaurant):
+    def __init__(self, name, cuisine_type, uptime, downtime, base_price, extra_size, extra_scoop, *flavors):
+        super().__init__(name, cuisine_type,uptime,downtime)
         self.flavors = []
         self.base_price = base_price
         self.extra_size = extra_size
@@ -47,3 +47,8 @@ class IceCreamParlor(Restaurant):
                         self.sizes[customer_size] = (int(self.sizes[customer_size]) + self.extra_scoop)
                     print(f"\nThat'll be ${self.sizes[customer_size]:0.2f}!")
                     print(f"\nHere's Your {customer_size}, {customer_flavor} Cone!\n")
+
+if __name__ == "__main__":
+    shanty = Parlor("Alison's Ice Cream Parlor","American","8am","12am",3.00,1.50,1.99)
+    shanty.customer_ticket()
+
