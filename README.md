@@ -4,4 +4,4 @@ Restaurant hosts a list of dictionaries, a.k.a., a menu. each dictionary holding
 
 Ticket inherits Restaurant and hosts a second list of dictionaries, a.k.a., a ticket, each dictionary holding the name and price of items which customer's have ordered via cross-reference from the Restaurant menu.
 
-IceCreamParlor inherits Restaurant but hosts a simplified menu (in txt rather than json) with size-proportionate pricing and a simplified receipt.
+Parlor inherits Restaurant but hosts a simplified menu (in txt rather than json) with size-proportionate pricing and a simplified receipt.
