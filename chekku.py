@@ -9,6 +9,7 @@ class Ticket(Restaurant):
             self.check = []
         else:
             self.check = list(check)
+        self.deductions = []
         self.employee = employee
         self.tip = 1 + (tip / 100)
 
@@ -57,7 +58,7 @@ class Ticket(Restaurant):
             with open("chekku.json","r") as file:
                 self.check = json.loads(file.read())
         except IOError:
-                print("Missing check.")
+                print("New check.")
         return self.check
     
     def write_check(self):
@@ -80,17 +81,35 @@ class Ticket(Restaurant):
                 break
         self.write_check()
 
-    def calculate_total(self):
-        self.total = round(sum([self.item["price"] for self.item in self.check]) * self.tip,2)
-        return self.total
-
     def staff_meal(self):
         self.total = self.calculate_total()
+        print("Employee discount applied.")
         return round(self.total * 0.00 if self.total <= 20.00 else self.total - 20.00,2)
+
+    def happy_hour(self):
+        now = datetime.now()
+        current_hour = int(now.strftime("%H"))
+        if current_hour >= 16 and current_hour < 19:
+            print("Happy hour discount applied.")
+            return round(self.total * 0.50,2)
+        else:
+            return self.total
+
+    def ad_hoc_discount(self,revision):
+        self.deductions.append(revision)
+
+    def process_deductions(self):
+        return sum(deduction for deduction in self.deductions)
+
+    def calculate_total(self):
+        self.total = round(sum([self.item["price"] for self.item in self.check]) * self.tip,2)
+        self.total = self.happy_hour() 
+        return self.total
 
     def simple_receipt(self):
         self.total = self.calculate_total() if self.employee == False else self.staff_meal()
         receipt = list(set([self.item["order"] for self.item in self.check]))
+        adjustment = self.process_deductions()
         print(f"""
 
 
@@ -113,11 +132,15 @@ class Ticket(Restaurant):
                     """)
         print(f"""
             Thank you for visiting {self.name} and please come again.
-                ${self.total} (after {round((self.tip - 1) * 100,2)}% tip)
+                ${round(self.total - adjustment,2)} (after {round((self.tip - 1) * 100,2)}% tip)
+                
                 """)
+        for deduction in self.deductions:
+            print(f"${deduction} deduction applied.")
 
     def itemized_receipt(self):
         self.total = self.calculate_total() if self.employee == False else self.staff_meal()
+        adjustment = self.process_deductions()
         print(f"""
 
 
@@ -135,11 +158,13 @@ class Ticket(Restaurant):
                     """)
         print(f"""
             Thank you for visiting {self.name} and please come again.
-                ${self.total} (after {round((self.tip - 1) * 100,2)}% tip)
+                ${self.total - adjustment} (after {round((self.tip - 1) * 100,2)}% tip)
+                
                 """)
+        for deduction in self.deductions:
+            print(f"${deduction} deduction applied.")
 
 if __name__ == "__main__":
     izakaya = Ticket("Alison's Restaurant","American","8am","12am",20.0)
     izakaya.customer_order()
     izakaya.simple_receipt()
-    izakaya.itemized_receipt()
