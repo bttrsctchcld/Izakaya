@@ -110,6 +110,7 @@ class Ticket(Restaurant):
         self.total = self.calculate_total() if self.employee == False else self.staff_meal()
         receipt = list(set([self.item["order"] for self.item in self.check]))
         adjustment = self.process_deductions()
+        self.total -= adjustment
         print(f"""
 
 
@@ -132,7 +133,7 @@ class Ticket(Restaurant):
                     """)
         print(f"""
             Thank you for visiting {self.name} and please come again.
-                ${round(self.total - adjustment,2)} (after {round((self.tip - 1) * 100,2)}% tip)
+                ${round(self.total,2)} (after {round((self.tip - 1) * 100,2)}% tip)
                 
                 """)
         for deduction in self.deductions:
@@ -141,6 +142,7 @@ class Ticket(Restaurant):
     def itemized_receipt(self):
         self.total = self.calculate_total() if self.employee == False else self.staff_meal()
         adjustment = self.process_deductions()
+        self.total -= adjustment
         print(f"""
 
 
@@ -158,7 +160,7 @@ class Ticket(Restaurant):
                     """)
         print(f"""
             Thank you for visiting {self.name} and please come again.
-                ${self.total - adjustment} (after {round((self.tip - 1) * 100,2)}% tip)
+                ${round(self.total,2)} (after {round((self.tip - 1) * 100,2)}% tip)
                 
                 """)
         for deduction in self.deductions:
