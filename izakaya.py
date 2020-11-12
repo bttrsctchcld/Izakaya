@@ -42,8 +42,8 @@ class Restaurant:
         self.load_menu()
         inventory = [self.item["order"] for self.item in self.menu]
         if not order.title() in inventory: 
-            self.item["order"] = order.title()
-        self.item["taste"] = taste
+            self.item["order"] = str(order).title()
+        self.item["taste"] = str(taste)
         if price >= 0.00:
             self.item["price"] = price
         if avail >= 0:
