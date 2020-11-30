@@ -13,7 +13,7 @@ class Restaurant {
 	}
 }
 
-/* for js, you'll need to learn implementations for datetime, json, and import 
+/* for js, you'll need to learn implementations for datetime (getHours()), json, and import 
  * in order to implement describeRestaurant, loadMenu, and writeMenu 
  *
  * in js, unlike python, classes can be elaborated beyond the initializing scope;
