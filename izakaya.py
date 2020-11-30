@@ -3,9 +3,9 @@ from datetime import datetime
 import json
 
 class Restaurant:
-    def __init__(self,name,cuisine_type,uptime,downtime,menu=None):
+    def __init__(self,name,cuisine,uptime,downtime,menu=None):
         self.name = name
-        self.cuisine_type = cuisine_type
+        self.cuisine = cuisine
         self.uptime = uptime
         self.downtime = downtime
         self.item = {"order" : None, "taste" : None, "price" : 0.00, "avail" : 0, "service" : None, "allergy" : False}
@@ -15,7 +15,7 @@ class Restaurant:
             self.menu = list(menu)
     
     def describe_restaurant(self):
-        print(f"{self.name} serves {self.cuisine_type}. The restaurant opens at {self.uptime} and closes at {self.downtime}.") 
+        print(f"{self.name} serves {self.cuisine}. The restaurant opens at {self.uptime} and closes at {self.downtime}.") 
         real_uptime,real_downtime = hourly(self.uptime,self.downtime)
         now = datetime.now()
         current_hour = int(now.strftime("%H"))

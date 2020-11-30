@@ -3,8 +3,8 @@ from datetime import datetime
 import json
 
 class Ticket(Restaurant):
-    def __init__(self,name,cuisine_type,uptime,downtime,tip=0,employee=False,check=None):
-        super().__init__(name,cuisine_type,uptime,downtime)
+    def __init__(self,name,cuisine,uptime,downtime,tip=0,employee=False,check=None):
+        super().__init__(name,cuisine,uptime,downtime)
         if check is None:
             self.check = []
         else:
