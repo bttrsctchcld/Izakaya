@@ -29,6 +29,23 @@ class Restaurant {
 	writeMenu() {
 		JSON.stringify(this.menu);
 	}
+	updateMenu(order,taste,price,avail,service,allergy) {
+		if ! order in this.menu {
+			this.order = order;
+		}
+		this.taste = taste;
+		if price >= 0.00 {
+			this.price;
+		}
+		if avail >= 0 {
+			this.avail = avail;
+		}
+		if service in ("breakfast","lunch","appetizer","entree","dessert","cafe","bar") {
+			this.service = service;
+		}
+		this.allergy = allergy;
+		this.menu.push(this.item);
+	}
 }
 
 /* for js, you'll need to learn implementations for datetime (getHours()), json, and import 
