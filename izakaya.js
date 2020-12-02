@@ -17,7 +17,7 @@ function describeRestaurant {
 	console.log(`${this.name} serves ${this.cuisine}. The restaurant opens at ${this.uptime} and closes at ${this.downtime}.`);
 	realUptime,realDowntime = hourly(this.uptime,this.downtime);
 	currentHour = getHours();
-        if (realUptime < realDowntime && real_uptime <= current_hour < real_downtime) || (real_uptime > real_downtime && (current_hour >= real_uptime || current_hour < real_downtime)) {
+        if (realUptime < realDowntime && real_uptime <= currentHour < realDowntime) || (realUptime > realDowntime && (currentHour >= realUptime || currentHour < realDowntime)) {
 		console.log("The restaurant is currently open.");
 		return true;
 	} else {
