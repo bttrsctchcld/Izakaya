@@ -13,6 +13,19 @@ class Restaurant {
 	}
 }
 
+function describeRestaurant {
+	console.log(`${this.name} serves ${this.cuisine}. The restaurant opens at ${this.uptime} and closes at ${this.downtime}.`);
+	realUptime,realDowntime = hourly(this.uptime,this.downtime);
+	currentHour = getHours();
+        if (realUptime < realDowntime && real_uptime <= current_hour < real_downtime) || (real_uptime > real_downtime && (current_hour >= real_uptime || current_hour < real_downtime)) {
+		console.log("The restaurant is currently open.");
+		return true;
+	} else {
+		console.log("The restaurant is currently closed.");
+		return false;
+	}
+}
+
 /* for js, you'll need to learn implementations for datetime (getHours()), json, and import 
  * in order to implement describeRestaurant, loadMenu, and writeMenu 
  *
