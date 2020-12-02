@@ -11,18 +11,23 @@ class Restaurant {
 			this.menu = menu;
 		}
 	}
-}
-
-function describeRestaurant {
-	console.log(`${this.name} serves ${this.cuisine}. The restaurant opens at ${this.uptime} and closes at ${this.downtime}.`);
-	realUptime,realDowntime = hourly(this.uptime,this.downtime);
-	currentHour = getHours();
-        if (realUptime < realDowntime && real_uptime <= currentHour < realDowntime) || (realUptime > realDowntime && (currentHour >= realUptime || currentHour < realDowntime)) {
-		console.log("The restaurant is currently open.");
-		return true;
-	} else {
-		console.log("The restaurant is currently closed.");
-		return false;
+	describeRestaurant() {
+		console.log(`${this.name} serves ${this.cuisine}. The restaurant opens at ${this.uptime} and closes at ${this.downtime}.`);
+		realUptime,realDowntime = hourly(this.uptime,this.downtime);
+		currentHour = getHours();
+		if (realUptime < realDowntime && real_uptime <= currentHour < realDowntime) || (realUptime > realDowntime && (currentHour >= realUptime || currentHour < realDowntime)) {
+			console.log("The restaurant is currently open.");
+			return true;
+		} else {
+			console.log("The restaurant is currently closed.");
+			return false;
+		}
+	}
+	loadMenu() {
+		this.menu = JSON.parse(file);
+	}
+	writeMenu() {
+		JSON.stringify(this.menu);
 	}
 }
 
