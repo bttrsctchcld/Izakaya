@@ -1,52 +1,50 @@
 class Restaurant {
-	constructor(name,cuisine,uptime,downtime,menu=null) {
+	constructor(name,cuisine,uptime,downtime,menu=[]) {
 		this.name = name;
 		this.cuisine = cuisine;
 		this.uptime = uptime;
 		this.downtime = downtime;
-		this.item = {order:null,taste:null,price:0.00,avail:0,service:null,allergy:false}
-		if menu = null {
-			this.menu = [];
-		} else {
-			this.menu = menu;
+		this.menu = menu;
 		}
-	}
 	describeRestaurant() {
 		console.log(`${this.name} serves ${this.cuisine}. The restaurant opens at ${this.uptime} and closes at ${this.downtime}.`);
-		realUptime,realDowntime = hourly(this.uptime,this.downtime);
-		currentHour = getHours();
-		if (realUptime < realDowntime && real_uptime <= currentHour < realDowntime) || (realUptime > realDowntime && (currentHour >= realUptime || currentHour < realDowntime)) {
-			console.log("The restaurant is currently open.");
-			return true;
-		} else {
-			console.log("The restaurant is currently closed.");
-			return false;
 		}
-	}
-	loadMenu() {
-		this.menu = JSON.parse(file);
-	}
-	writeMenu() {
-		JSON.stringify(this.menu);
-	}
 	updateMenu(order,taste,price,avail,service,allergy) {
-		if ! order in this.menu {
-			this.order = order;
+		const item = {order:null,taste:null,price:0.00,avail:0,service:null,allergy:false};
+		const orders = [];
+		for (const line of this.menu) {
+			orders.push(line.order);
 		}
-		this.taste = taste;
-		if price >= 0.00 {
-			this.price;
+		console.log(orders);
+		if (!(order in orders)) {
+			item.order = order;
+		} else {
 		}
-		if avail >= 0 {
-			this.avail = avail;
+		item.taste = taste;
+		if (price >= 0.00) {
+			item.price = price;
 		}
-		if service in ("breakfast","lunch","appetizer","entree","dessert","cafe","bar") {
-			this.service = service;
+		if (avail > 0) {
+			item.avail = avail;
 		}
-		this.allergy = allergy;
-		this.menu.push(this.item);
+		const services = ["breakfast","lunch","appetizer","entree","dessert","cafe","bar"];
+		if (services.includes(service)) {
+			item.service = service;
+		}
+		item.allergy = allergy;
+		this.menu.push(item);
+		console.log(this.menu);
 	}
 }
+
+
+
+izakaya = new Restaurant("Alice's Restaurant","American","8am","12pm");
+izakaya.describeRestaurant();
+izakaya.updateMenu("hamburger","It's a hamburger",3.99,100,"lunch",false);
+izakaya.updateMenu("cheeseburger","It's a cheeseburger",5.99,100,"lunch",false);
+izakaya.updateMenu("cheeseburger","It's a cheeseburger",5.99,100,"lunch",false);
+
 
 /* for js, you'll need to learn implementations for datetime (getHours()), json, and import 
  * in order to implement describeRestaurant, loadMenu, and writeMenu 
