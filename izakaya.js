@@ -102,13 +102,3 @@ function hourly(uptime,downtime) {
 
 izakaya = new Restaurant("Alice's Restaurant","American","8am","3pm");
 izakaya.updateMenu("jeezy","cheesy",9.99,79,"lunch",false);
-
-
-/* for js, you'll need to learn implementations for datetime (getHours()), json, and import 
- * in order to implement describeRestaurant, loadMenu, and writeMenu 
- *
- * in js, unlike python, classes can be elaborated beyond the initializing scope;
- * you can spread the functions out and thus avoid the need to create two subclasses
- *
- * be mindful of the differences between: js maps vs python dictionaries (valid keys, index notation),
- * js arrays vs python lists, js classes and prototypes vs python classes (null, new) */
