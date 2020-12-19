@@ -28,10 +28,9 @@ class Restaurant {
 	 * malfunctions when calling loadMenu() to load this.menu indirectly */
 
 	updateMenu(order,taste,price,avail,service,allergy) {
-		this.loadMenu();
 		const item = {order:null,taste:null,price:0.00,avail:0,service:null,allergy:false};
 		const orders = [];
-		for (const line of this.menu) {
+		for (const line of this.loadMenu()) {
 			orders.push(line.order);
 		}
 		if (orders.includes(order)) {
@@ -51,8 +50,8 @@ class Restaurant {
 			item.service = service;
 		}
 		item.allergy = allergy;
-		this.menu.push(item);
-		this.writeMenu();
+		menu.push(item);
+		this.writeMenu(menu);
 	}
 	loadMenu() {
 		const fs = require("fs");
@@ -62,17 +61,18 @@ class Restaurant {
 				return;
 			}
 			try {
-				const loadedMenu = JSON.parse(jsonString);
-				this.menu = loadedMenu;
+				const menu = JSON.parse(jsonString);
+				console.log(menu);
+				return menu;
 			} catch (err) {
 				console.log("Error parsing JSON string:",err);
 			}
 		});
 	}
-	writeMenu() {
+	writeMenu(menu) {
 		const fs = require("fs");
-		let loadedMenu = JSON.stringify(this.menu);
-		fs.writeFile("menu2.json",loadedMenu,function(err) {
+		const loadedMenu = JSON.stringify(menu);
+		fs.writeFile("menu2.json",menu,function(err) {
 			if (err) {
 				console.log(err);
 			}
