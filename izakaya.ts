@@ -22,15 +22,10 @@ class Restaurant {
 		}
 	}
 
-	/* in js, you need to use arrow notation in order to share methods within a class
-	 * otherwise, "this" will misbehave
-	 * in this case, this.menu works fine when called by loadMenu() directly but updateMenu()
-	 * malfunctions when calling loadMenu() to load this.menu indirectly */
-
 	updateMenu(order,taste,price,avail,service,allergy) {
 		const item = {order:null,taste:null,price:0.00,avail:0,service:null,allergy:false};
 		const orders = [];
-		for (const line of this.loadMenu()) {
+		for (let line of this.loadMenu()) {
 			orders.push(line.order);
 		}
 		if (orders.includes(order)) {
@@ -53,6 +48,10 @@ class Restaurant {
 		menu.push(item);
 		this.writeMenu(menu);
 	}
+	
+	/* error: loadMenu() is loading but not returning a menu due to scoping issues
+	 * how can you modify nesting, binding, and return statements to resolve? */
+
 	loadMenu() {
 		const fs = require("fs");
 		fs.readFile("./menu.json","utf8",(err,jsonString) => {
@@ -61,9 +60,7 @@ class Restaurant {
 				return;
 			}
 			try {
-				const menu = JSON.parse(jsonString);
-				console.log(menu);
-				return menu;
+				this.menu = JSON.parse(jsonString); // menu successfully loads
 			} catch (err) {
 				console.log("Error parsing JSON string:",err);
 			}
@@ -101,4 +98,5 @@ function hourly(uptime,downtime) {
 }
 
 izakaya = new Restaurant("Alice's Restaurant","American","8am","3pm");
-izakaya.updateMenu("jeezy","cheesy",9.99,79,"lunch",false);
+izakaya.loadMenu();
+console.log(izakaya.menu);
