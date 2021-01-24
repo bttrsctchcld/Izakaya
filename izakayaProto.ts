@@ -3,7 +3,6 @@ function Restaurant(name,cuisine,uptime,downtime) {
 	this.cuisine = cuisine;
 	this.uptime = uptime;
 	this.downtime = downtime;
-	this.menu = [];
 }
 
 Restaurant.prototype.description = function() {
@@ -51,7 +50,7 @@ Restaurant.prototype.load_menu = function() {
 		}
 		try {
 			menu = JSON.parse(jsonString); // menu successfully loads
-			return menu;
+			return this.menu;
 		} catch (err) {
 			console.log("Error parsing JSON string:",err);
 		}
@@ -60,5 +59,4 @@ Restaurant.prototype.load_menu = function() {
 
 let blue_collar = new Restaurant("Blue Collar","American","9am","6pm");
 blue_collar.description();
-blue_collar.load_menu();
-console.log(blue_collar.menu);
+console.log(blue_collar.load_menu());

@@ -1,83 +1,71 @@
-class Restaurant {
-	constructor(name,cuisine,uptime,downtime) {
-		this.name = name;
-		this.cuisine = cuisine;
-		this.uptime = uptime;
-		this.downtime = downtime;
-		this.menu = [];
-		}
-	describeRestaurant() {
-		console.log(`${this.name} serves ${this.cuisine}. The restaurant opens at ${this.uptime} and closes at ${this.downtime}.`);
-		const realTimes = hourly(this.uptime,this.downtime);
-		const realUptime = realTimes[0];
-		const realDowntime = realTimes[1];
-		const today = new Date();
-		const currentHour = today.getHours();
-		if ((realUptime < realDowntime && realUptime <= currentHour < realDowntime) || (realUptime > realDowntime && (currentHour >= realUptime || currentHour < realDowntime))) {
-			console.log("The restaurant is currently open.");
-			return true;
-		} else {
-			console.log("The restaurant is currently closed.");
-			return false;
-		}
-	}
-
-	updateMenu(order,taste,price,avail,service,allergy) {
-		const item = {order:null,taste:null,price:0.00,avail:0,service:null,allergy:false};
-		const orders = [];
-		for (let line of this.loadMenu()) {
-			orders.push(line.order);
-		}
-		if (orders.includes(order)) {
-			return;
-		} else {
-			item.order = order;
-		}
-		item.taste = taste;
-		if (price >= 0.00) {
-			item.price = price;
-		}
-		if (avail > 0) {
-			item.avail = avail;
-		}
-		const services = ["breakfast","lunch","appetizer","entree","dessert","cafe","bar"];
-		if (services.includes(service)) {
-			item.service = service;
-		}
-		item.allergy = allergy;
-		menu.push(item);
-		this.writeMenu(menu);
-	}
-	
-	/* error: loadMenu() is loading but not returning a menu due to scoping issues
-	 * how can you modify nesting, binding, and return statements to resolve? */
-
-	loadMenu() {
-		const fs = require("fs");
-		fs.readFile("./menu.json","utf8",(err,jsonString) => {
-			if (err) {
-				console.log("File read failed:",err);
-				return;
-			}
-			try {
-				this.menu = JSON.parse(jsonString); // menu successfully loads
-			} catch (err) {
-				console.log("Error parsing JSON string:",err);
-			}
-		});
-	}
-	writeMenu(menu) {
-		const fs = require("fs");
-		const loadedMenu = JSON.stringify(menu);
-		fs.writeFile("menu2.json",menu,function(err) {
-			if (err) {
-				console.log(err);
-			}
-		});
+const describeRestaurant = (name,cuisine,uptime,downtime) => {
+	console.log(`${name} serves ${cuisine}. The restaurant opens at ${uptime} and closes at ${downtime}.`);
+	const realTimes = hourly(uptime,downtime);
+	const realUptime = realTimes[0];
+	const realDowntime = realTimes[1];
+	const today = new Date();
+	const currentHour = today.getHours();
+	if ((realUptime < realDowntime && realUptime <= currentHour < realDowntime) || (realUptime > realDowntime && (currentHour >= realUptime || currentHour < realDowntime))) {
+		console.log("The restaurant is currently open.");
+		return true;
+	} else {
+		console.log("The restaurant is currently closed.");
+		return false;
 	}
 }
 
-function hourly(uptime,downtime) {
+const loadMenu = (menu=[]) => {
+	const fs = require("fs");
+	fs.readFile("./menu.json","utf8",(err,jsonString) => {
+		if (err) {
+			console.log("File read failed:",err);
+			return;
+		} try {
+			menu = JSON.parse(jsonString); // menu successfully loads
+		} catch (err) {
+			console.log("Error parsing JSON string:",err);
+		}
+	});
+}
+
+const writeMenu = (menu) => {
+	const fs = require("fs");
+	const loadedMenu = JSON.stringify(menu);
+	fs.writeFile("menu2.json",menu,function(err) {
+		if (err) {
+			console.log(err);
+		}
+	});
+}
+
+const updateMenu = (order,taste,price,avail,service,allergy) => {
+	const menu = // loadMenu()
+	const item = {order:null,taste:null,price:0.00,avail:0,service:null,allergy:false};
+	const orders = [];
+	for (let line of menu()) {
+		orders.push(line.order);
+	} if (orders.includes(order)) {
+		return;
+	} else {
+		item.order = order;
+	}
+	item.taste = taste;
+	if (price >= 0.00) {
+		item.price = price;
+	}
+	if (avail > 0) {
+		item.avail = avail;
+	}
+	const services = ["breakfast","lunch","appetizer","entree","dessert","cafe","bar"];
+	if (services.includes(service)) {
+		item.service = service;
+	}
+	item.allergy = allergy;
+	menu.push(item);
+	writeMenu(menu);
+}
+
+const hourly = (uptime,downtime) => {
 	stringTimes = [uptime,downtime];
 	realTimes = [];
 	for (let time of stringTimes) {
@@ -96,7 +84,3 @@ function hourly(uptime,downtime) {
 	}
 	return realTimes;
 }
-
-izakaya = new Restaurant("Alice's Restaurant","American","8am","3pm");
-izakaya.loadMenu();
-console.log(izakaya.menu);
