@@ -2,7 +2,6 @@ const describeRestaurant = (name,cuisine,uptime,downtime) => {
 	console.log(`${name} serves ${cuisine}. The restaurant opens at ${uptime} and closes at ${downtime}.`);
 	return [uptime,downtime];
 }
-
 const operational = () => {
 	const realTimes = hourly(uptime,downtime);
 	const realUptime = realTimes[0];
@@ -17,22 +16,10 @@ const operational = () => {
 		return false;
 	}
 }
-
 const loadMenu = () => {
-	const fs = require("fs");
-	fs.readFile("./menu.json","utf8",(err,jsonString) => {
-		if (err) {
-			console.log("File read failed:",err);
-			return;
-		} try {
-			menu = JSON.parse(jsonString); // menu successfully loads
-			return menu;
-		} catch (err) {
-			console.log("Error parsing JSON string:",err);
-		}
-	});
-}
-
+	const json = require('/Users/jcharity/Documents/GitHub/Izakaya/menu.json');
+	return json;
+};
 const writeMenu = (menu) => {
 	const fs = require("fs");
 	const loadedMenu = JSON.stringify(menu);
@@ -42,12 +29,11 @@ const writeMenu = (menu) => {
 		}
 	});
 }
-
 const updateMenu = (order,taste,price,avail,service,allergy) => {
 	const menu = loadMenu();
 	const item = {order:null,taste:null,price:0.00,avail:0,service:null,allergy:false};
 	const orders = [];
-	for (let line of menu()) {
+	for (let line of menu) {
 		orders.push(line.order);
 	} if (orders.includes(order)) {
 		return;
@@ -69,7 +55,6 @@ const updateMenu = (order,taste,price,avail,service,allergy) => {
 	menu.push(item);
 	writeMenu(menu);
 }
-
 const hourly = () => {
 	const stringTimes = hoursOfOperation();
 	const realTimes = [];
@@ -89,7 +74,6 @@ const hourly = () => {
 	}
 	return realTimes;
 }
-
 const printMenu = (self,menu_query="full") => {
 	const menu = load_menu();
 	const service_menu = []
@@ -102,56 +86,52 @@ const printMenu = (self,menu_query="full") => {
             console.log(`\n\t{self.item["order"]}, {self.item["taste"]}, {self.item["price"]}`)
 	}
 }
-
 const take_stock = () => {
 	const menu = load_menu()
         const supply_query = int(input("What's the maximum stock for current inventory you want to review? "))
         const low_supply = []
 	for (let item of menu) {
-		if int(item["avail"] <= supply_query) {
+		if (item["avail"] <= supply_query) {
 			low_supply.push(item);
 		}
 	}
 	console.log(low_supply)
 }
-
 const restock = (stock,restock) => {
 	const menu = load_menu();
         for (let item of menu) {
-		if stock == item["order"] {
+		if (stock == item["order"]) {
 			self.item["avail"] += restock
 		}
 	}
         write_menu();
 }
-
 const destock = (discontinue) => {
         const menu = load_menu()
         for (let item of menu) {
-		if discontinue == item["order"] {
+		if (discontinue == item["order"]) {
 			menu.remove(item)
 		}
 	}
         write_menu()
 }
-
 const customerOrder = () => {
         const is_operational = operational()
-        if is_operational === true {
+        if (is_operational === true) {
 		const menu = load_menu();
 		print_menu();
 		const customer_allergy = prompt("Do you have any food allergies? ").toLowerCase()
-		while true {
+		while(true) {
 			let order = input("What would you like to order? ").title()
-			if order == "Q" {
+			if (order == "Q") {
 				break
 			}
 			for (let item in menu) {
-				if order == item["order"] {
+				if (order == item["order"]) {
 					if (customer_allergy === "yes" && item["allergy"] === true) {
 						console.log("I'm sorry but you appear to be allergic.");
 						break;
-					} else if (int(item["avail"]) > 0) {
+					} else if (item["avail"] > 0) {
 						item["avail"] -= 1;
 						write_menu();
 						console.log("We'll have that right out to you.");
@@ -165,3 +145,6 @@ const customerOrder = () => {
 		}
 	}
 }
+console.log(loadMenu());
+updateMenu("jeezy","cheesy",9.99,79,"lunch",false);
+console.log(loadMenu());
