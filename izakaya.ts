@@ -17,13 +17,13 @@ const operational = () => {
 	}
 }
 const loadMenu = () => {
-	const json = require('/Users/jcharity/Documents/GitHub/Izakaya/menu.json');
-	return json;
+	const menu = require('/Users/jcharity/Documents/GitHub/Izakaya/menu2.json');
+	return menu;
 };
 const writeMenu = (menu) => {
 	const fs = require("fs");
 	const loadedMenu = JSON.stringify(menu);
-	fs.writeFile("menu2.json",menu,function(err) {
+	fs.writeFile("menu2.json",loadedMenu,function(err) {
 		if (err) {
 			console.log(err);
 		}
@@ -145,6 +145,5 @@ const customerOrder = () => {
 		}
 	}
 }
-console.log(loadMenu());
-updateMenu("jeezy","cheesy",9.99,79,"lunch",false);
+updateMenu("breezy","cheesy",9.99,79,"lunch",false);
 console.log(loadMenu());

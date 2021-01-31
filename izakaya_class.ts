@@ -21,16 +21,11 @@ class Restaurant {
 			return false;
 		}
 	}
-
-	/* in js, you need to use arrow notation in order to share methods within a class
-	 * otherwise, "this" will misbehave
-	 * in this case, this.menu works fine when called by loadMenu() directly but updateMenu()
-	 * malfunctions when calling loadMenu() to load this.menu indirectly */
-
 	updateMenu(order,taste,price,avail,service,allergy) {
+		this.loadMenu();
 		const item = {order:null,taste:null,price:0.00,avail:0,service:null,allergy:false};
 		const orders = [];
-		for (const line of this.loadMenu()) {
+		for (const line of this.menu) {
 			orders.push(line.order);
 		}
 		if (orders.includes(order)) {
@@ -51,23 +46,21 @@ class Restaurant {
 		}
 		item.allergy = allergy;
 		this.menu.push(item);
-		console.log(this.menu);
 	}
         loadMenu = () => {
-		const json = require('/Users/jcharity/Documents/GitHub/Izakaya/menu.json');
-		return json;
+		this.menu = require('/Users/jcharity/Documents/GitHub/Izakaya/menu2.json');
+		console.log(this.menu);
 	};
 	writeMenu(menu) {
 		const fs = require("fs");
 		const loadedMenu = JSON.stringify(menu);
-		fs.writeFile("menu2.json",menu,function(err) {
+		fs.writeFile("menu2.json",loadedMenu,function(err) {
 			if (err) {
 				console.log(err);
 			}
 		});
 	}
 }
-
 function hourly(uptime,downtime) {
 	stringTimes = [uptime,downtime];
 	realTimes = [];
@@ -87,6 +80,6 @@ function hourly(uptime,downtime) {
 	}
 	return realTimes;
 }
-
 izakaya = new Restaurant("Alice's Restaurant","American","8am","3pm");
-izakaya.updateMenu("jeezy","cheesy",9.99,79,"lunch",false);
+izakaya.describeRestaurant();
+izakaya.loadMenu();
