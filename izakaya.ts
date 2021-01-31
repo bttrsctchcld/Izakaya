@@ -25,7 +25,7 @@ class Restaurant {
 		this.loadMenu();
 		const item = {order:null,taste:null,price:0.00,avail:0,service:null,allergy:false};
 		const orders = [];
-		for (const line of this.menu) {
+		for (let line of this.menu) {
 			orders.push(line.order);
 		}
 		if (orders.includes(order)) {
@@ -51,14 +51,35 @@ class Restaurant {
 		this.menu = require('/Users/jcharity/Documents/GitHub/Izakaya/menu2.json');
 		console.log(this.menu);
 	};
-	writeMenu(menu) {
+	writeMenu = () => {
 		const fs = require("fs");
-		const loadedMenu = JSON.stringify(menu);
+		const loadedMenu = JSON.stringify(this.menu);
 		fs.writeFile("menu2.json",loadedMenu,function(err) {
 			if (err) {
 				console.log(err);
 			}
 		});
+	}
+	customerOrder = (order,allergy) => {
+		if (this.describeRestaurant() === true) {
+			this.loadMenu();
+                        for (let item of this.menu) {
+				if (order === item["order"]) {
+					if (allergy === "yes" && item["allergy"] === true) {
+						console.log("I'm sorry but you appear to be allergic.");
+                                                break;
+					} else if (item["avail"] > 0) {
+						item["avail"] -= 1;
+                                                this.writeMenu();
+                                                console.log("We'll have that right out to you.");
+                                                break;
+					} else {
+                                                console.log("I'm sorry but we're out of that right now.");
+					        break;
+					}
+				}
+			}
+		}
 	}
 }
 function hourly(uptime,downtime) {
@@ -82,4 +103,4 @@ function hourly(uptime,downtime) {
 }
 izakaya = new Restaurant("Alice's Restaurant","American","8am","3pm");
 izakaya.describeRestaurant();
-izakaya.loadMenu();
+izakaya.customerOrder("Cheeseburger",false);
